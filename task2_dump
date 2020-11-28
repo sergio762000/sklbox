@@ -1,0 +1,188 @@
+-- MySQL dump 10.13  Distrib 8.0.22, for Linux (x86_64)
+--
+-- Host: 127.0.0.1    Database: skillbox
+-- ------------------------------------------------------
+-- Server version	8.0.22-0ubuntu0.20.04.2
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `brand`
+--
+
+DROP TABLE IF EXISTS `brand`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `brand` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `brand`
+--
+
+LOCK TABLES `brand` WRITE;
+/*!40000 ALTER TABLE `brand` DISABLE KEYS */;
+INSERT INTO `brand` VALUES (1,0,'Brand1'),(2,0,'Brand2'),(3,0,'Brand3'),(4,0,'Brand4'),(5,0,'Brand5');
+/*!40000 ALTER TABLE `brand` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `category`
+--
+
+DROP TABLE IF EXISTS `category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `category` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `id_parent_category` int DEFAULT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `id_parent_category` (`id_parent_category`),
+  CONSTRAINT `category_ibfk_1` FOREIGN KEY (`id_parent_category`) REFERENCES `category` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `category`
+--
+
+LOCK TABLES `category` WRITE;
+/*!40000 ALTER TABLE `category` DISABLE KEYS */;
+INSERT INTO `category` VALUES (1,0,NULL,'Category1'),(2,0,NULL,'Category2'),(3,0,NULL,'Category3'),(4,0,NULL,'Category4'),(5,0,1,'Category1_1'),(6,0,1,'Category1_2'),(7,0,2,'Category2_1'),(8,0,3,'Category3_1'),(9,0,3,'Category3_2'),(10,0,3,'Category3_3'),(11,0,4,'Category4_1'),(12,0,10,'Category3_3_1'),(13,0,10,'Category3_3_2'),(14,0,11,'Category4_1_1');
+/*!40000 ALTER TABLE `category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `category_product`
+--
+
+DROP TABLE IF EXISTS `category_product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `category_product` (
+  `id_category` int NOT NULL,
+  `id_product` int NOT NULL,
+  PRIMARY KEY (`id_category`,`id_product`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `category_product`
+--
+
+LOCK TABLES `category_product` WRITE;
+/*!40000 ALTER TABLE `category_product` DISABLE KEYS */;
+INSERT INTO `category_product` VALUES (1,13),(1,15),(1,17),(1,25),(3,22),(4,8),(4,11),(4,23),(7,16),(8,9),(9,4),(9,9),(9,22),(12,3),(14,23);
+/*!40000 ALTER TABLE `category_product` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `color`
+--
+
+DROP TABLE IF EXISTS `color`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `color` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `color`
+--
+
+LOCK TABLES `color` WRITE;
+/*!40000 ALTER TABLE `color` DISABLE KEYS */;
+INSERT INTO `color` VALUES (1,0,'Red'),(2,0,'Orange'),(3,0,'Yellow'),(4,0,'Green'),(5,0,'Cyan'),(6,0,'Blue'),(7,0,'Violet');
+/*!40000 ALTER TABLE `color` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `color_product`
+--
+
+DROP TABLE IF EXISTS `color_product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `color_product` (
+  `id_color` int NOT NULL,
+  `id_product` int NOT NULL,
+  PRIMARY KEY (`id_color`,`id_product`),
+  KEY `id_product` (`id_product`),
+  CONSTRAINT `color_product_ibfk_1` FOREIGN KEY (`id_color`) REFERENCES `color` (`id`),
+  CONSTRAINT `color_product_ibfk_2` FOREIGN KEY (`id_product`) REFERENCES `product` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `color_product`
+--
+
+LOCK TABLES `color_product` WRITE;
+/*!40000 ALTER TABLE `color_product` DISABLE KEYS */;
+INSERT INTO `color_product` VALUES (4,1),(6,2),(7,3),(3,4),(6,4),(5,5),(7,5),(4,8),(7,13),(4,14),(3,20),(4,20),(5,21),(6,22),(4,24),(1,25);
+/*!40000 ALTER TABLE `color_product` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product`
+--
+
+DROP TABLE IF EXISTS `product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_brand` int DEFAULT NULL,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `name` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `id_brand` (`id_brand`),
+  CONSTRAINT `product_ibfk_1` FOREIGN KEY (`id_brand`) REFERENCES `brand` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product`
+--
+
+LOCK TABLES `product` WRITE;
+/*!40000 ALTER TABLE `product` DISABLE KEYS */;
+INSERT INTO `product` VALUES (1,1,0,'Product1_1'),(2,2,0,'Product2_1'),(3,3,0,'Product3_1'),(4,4,0,'Product4_1'),(5,5,0,'Product5_1'),(6,1,0,'Product1_2'),(7,1,0,'Product1_3'),(8,1,0,'Product1_4'),(9,1,0,'Product1_5'),(10,2,0,'Product2_2'),(11,2,0,'Product2_3'),(12,2,0,'Product2_4'),(13,2,0,'Product2_5'),(14,3,0,'Product3_2'),(15,3,0,'Product3_3'),(16,3,0,'Product3_4'),(17,3,0,'Product3_5'),(18,4,0,'Product4_2'),(19,4,0,'Product4_3'),(20,4,0,'Product4_4'),(21,4,0,'Product4_5'),(22,5,0,'Product5_2'),(23,5,0,'Product5_3'),(24,5,0,'Product5_4'),(25,5,0,'Product5_5');
+/*!40000 ALTER TABLE `product` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2020-11-28 22:33:50

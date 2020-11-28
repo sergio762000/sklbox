@@ -1,0 +1,31 @@
+// Выбираем все названия фирм у которых есть товар определенного цвета
+
+SELECT b.name FROM brand b
+LEFT JOIN product p on b.id = p.id_brand
+LEFT JOIN color_product cp on p.id = cp.id_product
+LEFT JOIN color c on cp.id_color = c.id WHERE c.id=6;
+
+
+// Количество товаров в определенной категории указанного цвета
+
+SELECT COUNT(DISTINCT p.id) as count_product_in_category FROM product p
+LEFT JOIN category_product cp on cp.id_product=p.id
+LEFT JOIN color_product c on p.id = c.id_product
+WHERE cp.id_category = 1 AND c.id_color = 7;
+
+
+// Выберите поддерево категорий по категории
+
+WITH RECURSIVE child AS
+    (
+        SELECT name, id, 1 as level
+        FROM category
+        WHERE id = {category.id}
+        UNION ALL
+        SELECT c.name, c.id, cd.level+1
+        FROM child cd, category c
+        WHERE c.id_parent_category=cd.id
+    )
+SELECT * FROM child ORDER BY level;
+
+// вместо {category.id} требуется подстановка ИД категории.
