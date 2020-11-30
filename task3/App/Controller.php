@@ -26,9 +26,7 @@ class Controller
             header('Location: /');
         }
 
-        ob_start();
-        include __DIR__ . '/../web/template/create.php';
-        return ob_end_flush();
+        return $this->render('create');
     }
 
     public function deleteProduct()
@@ -38,13 +36,17 @@ class Controller
         }
 
         if (!empty($_POST['product_id']) && empty($_POST['delete_product'])) {
-            ob_start();
-            include __DIR__ . '/../web/template/delete.php';
-            return ob_end_flush();
+            return $this->render('delete');
         }
 
         $this->modelProduct->deleteItem($_POST['product_id']);
         header('Location: /');
     }
 
+    private function render($page) {
+        ob_start();
+        $fileTemplate = __DIR__ . '/../web/template/' . $page . ".php";
+        include $fileTemplate;
+        return ob_end_flush();
+    }
 }
