@@ -6,12 +6,6 @@ namespace App;
 class Router
 {
     private $route;
-    private $controller;
-
-    public function __construct()
-    {
-        $this->controller = new Controller();
-    }
 
     public function dispatch($url)
     {

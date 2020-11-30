@@ -10,20 +10,24 @@ class Product implements ModelInterface
 
     public function listItem()
     {
-        // TODO: Implement listItem() method.
-        return __METHOD__;
+        ob_start();
+        include __DIR__ . '/../web/template/index.php';
+
+        return ob_end_flush();
     }
 
     public function createItem($fields)
     {
-        // TODO: Implement createItem() method.
-        return __METHOD__;
+        end($_SESSION['item']);
+        $currentID = key($_SESSION['item']);
+        $_SESSION['item'][$currentID]['product_name'] = $_POST['product_name'];
+        $_SESSION['item'][$currentID]['product_price'] = $_POST['product_price'];
+        $_SESSION['item'][$currentID + 1] = [];
     }
 
     public function deleteItem($id)
     {
-        // TODO: Implement deleteItem() method.
-        return __METHOD__;
+        unset($_SESSION['item'][$id]);
     }
 
 }

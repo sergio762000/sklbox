@@ -16,41 +16,35 @@ class Controller
     
     public function index()
     {
-        //todo - вывод списка item класса Product
-        $listAllProducts = $this->modelProduct->listItem();
-        die(__METHOD__);
-
-        //todo - подключение шаблона и передача в него списка item
-
-        return $listAllProducts;
+        $this->modelProduct->listItem();
     }
 
     public function createProduct()
     {
-        die(__METHOD__);
-        //todo - создание нового продукта в хранилище
-        //обработка массива $_POST (данные формы)
-        $formData = [];
-        foreach ($_POST['dataProduct'] as $name => $value) {
-            $formData[$name] = $value;
+        if (!empty($_POST)) {
+            $this->modelProduct->createItem($_POST);
+            header('Location: /');
         }
-        $this->modelProduct->createItem($formData);
 
-        header('Location /');
+        ob_start();
+        include __DIR__ . '/../web/template/create.php';
+        return ob_end_flush();
     }
 
     public function deleteProduct()
     {
-        die(__METHOD__);
-        //todo - Удаление продукта из хранилища
-        // Если нажата кнопка "Удалить"
-        if (isset($_POST['delete'])) {
-            $id = $_POST['dataProduct']['id'];
-            $this->modelProduct->deleteItem($id);
-            header('Location /');
+        if (empty($_POST['product_id'])) {
+            header('Location: /');
         }
-        // Иначе выводим информацию о товаре
 
+        if (!empty($_POST['product_id']) && empty($_POST['delete_product'])) {
+            ob_start();
+            include __DIR__ . '/../web/template/delete.php';
+            return ob_end_flush();
+        }
+
+        $this->modelProduct->deleteItem($_POST['product_id']);
+        header('Location: /');
     }
 
 }
